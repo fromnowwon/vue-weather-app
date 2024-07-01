@@ -1,10 +1,12 @@
 <template>
-	<div v-show="modalActive">
-		<div>
-			<slot />
-			<button @click="$emit('close-modal')">Close</button>
+	<Teleport to="body">
+		<div v-show="modalActive">
+			<div>
+				<slot />
+				<button @click="$emit('close-modal')">Close</button>
+			</div>
 		</div>
-	</div>
+	</Teleport>
 </template>
 
 <script setup>
