@@ -10,12 +10,18 @@
 			</RouterLink>
 
 			<div class="flex gap-3 flex-1 justify-end">
-				<i @click="toggleModal">info</i>
+				<i @click="toggleInfoModal">info</i>
 				<i @click="addCity" v-if="Object.keys(route.query).length > 0">add</i>
 			</div>
 
-			<BaseModal :modalActive="modalActive" @close-modal="toggleModal">
+			<!-- Info Modal -->
+			<BaseModal :modalActive="infoModalActive" @close-modal="toggleInfoModal">
 				<h2>About this app</h2>
+			</BaseModal>
+
+			<!-- Add Modal -->
+			<BaseModal :modalActive="addModalActive" @close-modal="toggleAddModal">
+				<h2>이미 추가되었습니다.</h2>
 			</BaseModal>
 		</nav>
 	</header>
@@ -29,14 +35,17 @@ import { uid } from "uid";
 
 const route = useRoute();
 const router = useRouter();
-const modalActive = ref(false);
+const infoModalActive = ref(false);
+const addModalActive = ref(false);
 const savedCities = ref([]);
 
-const toggleModal = () => {
-	modalActive.value = !modalActive.value;
+const toggleInfoModal = () => {
+	infoModalActive.value = !infoModalActive.value;
 };
 
-console.log("route.query", route.query);
+const toggleAddModal = () => {
+	addModalActive.value = !addModalActive.value;
+};
 
 const addCity = () => {
 	if (localStorage.getItem("savedCities")) {
@@ -53,8 +62,18 @@ const addCity = () => {
 		},
 	};
 
-	savedCities.value.push(locationObj);
-	localStorage.setItem("savedCities", JSON.stringify(savedCities.value));
+	const isDuplicate =
+		savedCities.value.length > 0 &&
+		savedCities.value.find((city) => {
+			return city.city === locationObj.city && city.state === locationObj.state;
+		});
+
+	if (!isDuplicate) {
+		savedCities.value.push(locationObj);
+		localStorage.setItem("savedCities", JSON.stringify(savedCities.value));
+	} else {
+		toggleAddModal();
+	}
 
 	let query = Object.assign({}, route.query);
 	delete query.preview;
