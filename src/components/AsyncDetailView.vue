@@ -2,7 +2,7 @@
 	<div class="flex flex-col flex-1 items-center">
 		<!-- Preview Banner -->
 		<div v-if="route.query.preview">
-			<p>미리보기 상태입니다. 시작하려면 '+' 아이콘을 클릭해주세요.</p>
+			<p>이 장소를 추가하려면 상단의 '+' 아이콘을 클릭해주세요.</p>
 		</div>
 
 		<!-- Weather Overview -->
@@ -81,13 +81,17 @@
 				</div>
 			</div>
 		</div>
+		<div class="flex items-center" @click="removeCity">
+			<p>Remove City</p>
+		</div>
 	</div>
 </template>
 
 <script setup>
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 const route = useRoute();
+const router = useRouter();
 
 const getWeatherData = async () => {
 	const apiKey = import.meta.env.VITE_WEATHER_API_KEY;
@@ -104,4 +108,13 @@ const getWeatherData = async () => {
 
 // Vue 3에서는 비동기 함수가 실행될 때 데이터가 반응성으로 생성 (변경 추적됨)
 const weatherData = await getWeatherData();
+
+const removeCity = () => {
+	const cities = JSON.parse(localStorage.getItem("savedCities"));
+	const updatedCities = cities.filter((city) => city.id !== route.query.id);
+	localStorage.setItem("savedCities", JSON.stringify(updatedCities));
+	router.push({
+		name: "home",
+	});
+};
 </script>
