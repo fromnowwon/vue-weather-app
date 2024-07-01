@@ -37,7 +37,6 @@ const getSearchResults = () => {
 		.then((response) => response.json())
 		.then((data) => {
 			weatherSearchData.value = data.features;
-			console.log(weatherSearchData.value);
 		})
 		.catch((error) => {
 			console.error("Error: ", error);
