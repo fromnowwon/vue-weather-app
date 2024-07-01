@@ -1,6 +1,6 @@
 <template>
 	<div v-for="city in savedCities" :key="city.id">
-		<CityCard :city="city" />
+		<CityCard :city="city" @click="goToDetailView(city)" />
 	</div>
 	<p v-if="savedCities.length === 0">저장된 장소가 없습니다.</p>
 </template>
@@ -8,8 +8,10 @@
 <script setup>
 import { ref } from "vue";
 import CityCard from "./CityCard.vue";
+import { useRouter } from "vue-router";
 
 const savedCities = ref([]);
+const router = useRouter();
 
 const getCities = async () => {
 	if (localStorage.getItem("savedCities")) {
@@ -36,4 +38,16 @@ const getCities = async () => {
 };
 
 await getCities();
+
+const goToDetailView = (city) => {
+	router.push({
+		name: "detail",
+		params: { state: city.state, city: city.city },
+		query: {
+			id: city.id,
+			lat: city.coords.lat,
+			lng: city.coords.lng,
+		},
+	});
+};
 </script>
