@@ -4,20 +4,29 @@
 			type="text"
 			v-model="searchQuery"
 			@input="debouncedGetSearchResults"
-			placeholder="국가명이나 도시명을 입력하세요."
+			placeholder="장소를 입력하세요"
 			class="py-2 px-1 w-full bg-transparent border-b focus:border-weather-secondary focus:outline-none focus:shadow-[0px_1px_0_0_#004E71] placeholder-gray-100"
 		/>
 		<div>
-			<ul>
-				<li
-					v-for="result of weatherSearchData"
-					:key="result.id"
-					@click="setDetail(result)"
-					class="py-2 cursor-pointer"
-				>
-					{{ result.properties.name_preferred }}
-				</li>
-			</ul>
+			<div
+				v-if="weatherSearchData !== null && searchQuery !== ''"
+				class="absolute bg-weather-secondary text-white w-full shadow-md py-2 px-2 top-[66px]"
+			>
+				<p class="py-2" v-if="searchError">에러가 발생했습니다!</p>
+				<p class="py-2" v-if="!searchError && weatherSearchData.length === 0">
+					결과가 없습니다.
+				</p>
+				<template v-else>
+					<div
+						v-for="result in weatherSearchData"
+						:key="result.id"
+						@click="setDetail(result)"
+						class="py-2 cursor-pointer"
+					>
+						{{ result.properties.name_preferred }}
+					</div>
+				</template>
+			</div>
 		</div>
 	</div>
 </template>
@@ -29,6 +38,7 @@ import router from "@/router";
 
 const searchQuery = ref("");
 const weatherSearchData = ref(null);
+const searchError = ref(false);
 
 const getSearchResults = () => {
 	const apiKey = import.meta.env.VITE_GEOCODING_API_KEY;
@@ -38,8 +48,8 @@ const getSearchResults = () => {
 		.then((data) => {
 			weatherSearchData.value = data.features;
 		})
-		.catch((error) => {
-			console.error("Error: ", error);
+		.catch(() => {
+			searchError.value = true;
 		});
 };
 

@@ -1,17 +1,27 @@
 <template>
-	<header class="sticky">
+	<header class="sticky top-0 bg-weather-primary shadow-lg">
 		<nav
 			class="container flex flex-col items-center sm:flex-row gap-4 text-white py-6"
 		>
 			<RouterLink :to="{ name: 'home' }">
 				<div class="flex items-center gap-3">
-					<h1>Vue Weather App</h1>
+					<FontAwesomeIcon :icon="faSun" class="text-xl" />
+					<h1 class="text-2xl">Vue Weather App</h1>
 				</div>
 			</RouterLink>
 
 			<div class="flex gap-3 flex-1 justify-end">
-				<i @click="toggleInfoModal">info</i>
-				<i @click="addCity" v-if="Object.keys(route.query).length > 0">add</i>
+				<FontAwesomeIcon
+					:icon="faCircleInfo"
+					@click="toggleInfoModal"
+					class="text-xl hover:text-weather-secondary duration-150 cursor-pointer"
+				/>
+				<FontAwesomeIcon
+					:icon="faPlus"
+					@click="addCity"
+					v-if="Object.keys(route.query).length > 0"
+					class="text-xl hover:text-weather-secondary duration-150 cursor-pointer"
+				/>
 			</div>
 
 			<!-- Info Modal -->
@@ -28,6 +38,8 @@
 </template>
 
 <script setup>
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import { faSun, faCircleInfo, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { RouterLink, useRoute, useRouter } from "vue-router";
 import BaseModal from "./BaseModal.vue";
 import { ref } from "vue";

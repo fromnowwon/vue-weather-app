@@ -1,6 +1,8 @@
 <template>
 	<main class="container text-white">
-		<SearchForm />
+		<div class="pt-4 mb-8 relative">
+			<SearchForm />
+		</div>
 		<div class="flex flex-col gap-4">
 			<Suspense>
 				<CityList />
