@@ -1,7 +1,7 @@
 <template>
 	<header class="sticky">
 		<nav
-			class="container flex flex-col items-center sm:flex-row items-center gap-4 text-white py-6"
+			class="container flex flex-col items-center sm:flex-row gap-4 text-white py-6"
 		>
 			<RouterLink :to="{ name: 'home' }">
 				<div class="flex items-center gap-3">
