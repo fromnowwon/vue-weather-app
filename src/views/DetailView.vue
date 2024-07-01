@@ -1,10 +1,12 @@
 <template>
 	<div>
-		<h1>Detail page</h1>
-		<AsyncDetailView />
+		<Suspense>
+			<AsyncDetailView />
+		</Suspense>
 	</div>
 </template>
 
 <script setup>
+import { Suspense } from "vue";
 import AsyncDetailView from "../components/AsyncDetailView.vue";
 </script>
