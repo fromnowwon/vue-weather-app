@@ -6,7 +6,12 @@
 		>
 			<div class="p-4 bg-white self-start mt-32 max-w-screen-md">
 				<slot />
-				<button @click="$emit('close-modal')">Close</button>
+				<button
+					class="text-white mt-8 bg-weather-primary py-2 px-6 hover:bg-weather-secondary"
+					@click="$emit('close-modal')"
+				>
+					닫기
+				</button>
 			</div>
 		</div>
 	</Teleport>
